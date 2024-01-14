@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AudioProcessingService {
-  private readonly serverUrl = 'http://localhost:3000/';
+  private readonly serverUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {
   }
@@ -13,6 +13,6 @@ export class AudioProcessingService {
   public sendAudio(blob: Blob): Observable<string> {
     const formData = new FormData();
     formData.append('audio', blob);
-    return this.http.post<string>(this.serverUrl + 'transcribe', formData, {responseType: 'text' as 'json'});
+    return this.http.post<string>(this.serverUrl + '/transcribe', formData, {responseType: 'text' as 'json'});
   }
 }
