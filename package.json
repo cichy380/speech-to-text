@@ -2,7 +2,11 @@
   "name": "speech-to-text",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "nx",
+    "start:backend": "nx serve backend",
+    "build:backend": "nx build backend"
+  },
   "private": true,
   "devDependencies": {
     "@nestjs/schematics": "^10.0.1",
