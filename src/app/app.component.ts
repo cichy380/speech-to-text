@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { AudioRecordingService } from './audio-recording.service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,5 +12,16 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'speech-to-text';
+
+  constructor(private audioRecordingService: AudioRecordingService) {
+  }
+
+  startRecording() {
+    this.audioRecordingService.startRecording();
+  }
+
+  async stopRecording() {
+    const audioBlob = await this.audioRecordingService.stopRecording();
+    // Do something with audioBlob
+  }
 }
