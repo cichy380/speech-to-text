@@ -1,27 +1,42 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+
 import { AudioRecordingService } from './audio-recording.service';
+import { AudioProcessingService } from './audio-processing.service';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, HttpClientModule],
+  providers: [AudioProcessingService, AudioRecordingService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  isRecording = false;
 
-  constructor(private audioRecordingService: AudioRecordingService) {
+  constructor(
+    private audioRecordingService: AudioRecordingService,
+    private audioProcessingService: AudioProcessingService,
+  ) {
   }
 
   startRecording() {
+    this.isRecording = true;
     this.audioRecordingService.startRecording();
   }
 
   async stopRecording() {
-    const audioBlob = await this.audioRecordingService.stopRecording();
-    // Do something with audioBlob
+    this.isRecording = false;
+    this.audioRecordingService.stopRecording()
+      .then(audioBlob => {
+        this.audioProcessingService.sendAudio(audioBlob)
+          .subscribe(transcription => {
+            console.log(transcription);
+          });
+      });
   }
+
 }

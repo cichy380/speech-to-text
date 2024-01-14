@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+
+@Injectable()
 export class AudioRecordingService {
 
   private mediaRecorder!: MediaRecorder;
@@ -10,7 +9,7 @@ export class AudioRecordingService {
   private stream!: MediaStream;
 
   startRecording() {
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    navigator.mediaDevices.getUserMedia({audio: true}).then(stream => {
       this.stream = stream;
       this.mediaRecorder = new MediaRecorder(stream);
       this.mediaRecorder.start();
@@ -21,7 +20,7 @@ export class AudioRecordingService {
   }
 
   stopRecording() {
-    return new Promise<Blob>((resolve, reject) => {
+    return new Promise<Blob>((resolve, _reject) => {
       this.mediaRecorder.onstop = () => {
         const blob = new Blob(this.recordedChunks, {
           type: 'audio/wav',
