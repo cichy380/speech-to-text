@@ -1,2 +1,10 @@
-<button (click)="startRecording()">Start Recording</button>
-<button (click)="stopRecording()">Stop Recording</button>
+<button (click)="startRecording()" style="margin: 10px; background-color: lightgreen">Start Recording</button>
+<button (click)="stopRecording()" style="margin: 10px; background-color: lightpink">Stop Recording</button>
+
+<div *ngIf="isRecording" style="margin: 40px; display: flex; justify-content: center" >
+  <div style="width: 100px; height: 100px; border-radius: 50%; background-color: red;"></div>
+</div>
+
+<p *ngIf="isConverting" style="opacity: 50%; ">loading...</p>
+
+<p>{{ text }}</p>

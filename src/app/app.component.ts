@@ -15,7 +15,11 @@ import { AudioProcessingService } from './audio-processing.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+
   isRecording = false;
+  isConverting = false;
+
+  text = '';
 
   constructor(
     private audioRecordingService: AudioRecordingService,
@@ -24,17 +28,20 @@ export class AppComponent {
   }
 
   startRecording() {
+    this.text = '';
     this.isRecording = true;
     this.audioRecordingService.startRecording();
   }
 
   async stopRecording() {
     this.isRecording = false;
+    this.isConverting = true;
     this.audioRecordingService.stopRecording()
       .then(audioBlob => {
         this.audioProcessingService.sendAudio(audioBlob)
           .subscribe(transcription => {
-            console.log(transcription);
+            this.isConverting = false;
+            this.text = transcription;
           });
       });
   }
