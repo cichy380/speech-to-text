@@ -5,7 +5,9 @@
   "scripts": {
     "nx": "nx",
     "start:backend": "nx serve backend",
-    "build:backend": "nx build backend"
+    "start:frontend": "nx serve frontend",
+    "build:backend": "nx build backend",
+    "build:frontend": "nx build frontend"
   },
   "private": true,
   "devDependencies": {
