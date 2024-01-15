@@ -7,7 +7,8 @@
     "start:backend": "nx serve backend",
     "start:frontend": "nx serve frontend",
     "build:backend": "nx build backend",
-    "build:frontend": "nx build frontend"
+    "build:frontend": "nx build frontend",
+    "ci:frontend": "ng build --base-href /speech-to-text/"
   },
   "private": true,
   "devDependencies": {
