@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AudioProcessingService {
-  private readonly serverUrl = 'http://localhost:3000/api';
+
+  private readonly serverUrl = 'https://speech-to-text-rnx2.onrender.com/api';
 
   constructor(private http: HttpClient) {
   }
