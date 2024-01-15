@@ -1,13 +1,16 @@
-<main class="p-6">
-  <button (click)="startRecording()" class="p-4 bg-green-200 mr-6">Start Recording</button>
-  <button (click)="stopRecording()" class="p-4 bg-red-200">Stop Recording</button>
+<main class="p-5">
+  <div class="grid grid-cols-2 gap-5">
+    <button (click)="startRecording()" class="p-4 bg-green-200">Start Recording</button>
+    <button (click)="stopRecording()" class="p-4 bg-red-200">Stop Recording</button>
+  </div>
 
-  <div *ngIf="isRecording" class="m-6 flex justify-center">
+  <div *ngIf="isRecording" class="mt-10 flex justify-center">
     <div class="h-20 w-20 rounded-full bg-red-600"></div>
   </div>
 
-  <p *ngIf="isConverting" class="opacity-50">loading...</p>
-
-  <p>{{ text }}</p>
+  <div class="mt-5 text-3xl">
+    <p *ngIf="isConverting" class="opacity-50">loading...</p>
+    <p>{{ text }}</p>
+  </div>
 
 </main>
