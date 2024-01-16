@@ -45,16 +45,16 @@ export class AppComponent {
   }
 
   async stopRecording() {
-    // this.isRecording = false;
-    // this.isConverting = true;
-    // this.audioRecordingService.stopRecording()
-    //   .then(audioBlob => {
-    //     this.audioProcessingService.sendAudio(audioBlob)
-    //       .subscribe(transcription => {
-    //         this.isConverting = false;
-    //         this.text = transcription;
-    //       });
-    //   });
+    this.isRecording = false;
+    this.isConverting = true;
+    this.audioRecordingService.stopRecording()
+      .then(audioBlob => {
+        this.audioProcessingService.sendAudio(audioBlob)
+          .subscribe(transcription => {
+            this.isConverting = false;
+            this.text = transcription;
+          });
+      });
   }
 
 }
