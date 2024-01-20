@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -11,12 +11,12 @@ import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-    imports: [CommonModule, HttpClientModule, MicIconComponent, SpinnerIconComponent],
+  imports: [CommonModule, HttpClientModule, MicIconComponent, SpinnerIconComponent],
   providers: [AudioProcessingService, AudioRecordingService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   isRecording = false;
   isConverting = false;
@@ -24,39 +24,45 @@ export class AppComponent {
   text = '';
 
   constructor(
-    private readonly audioRecordingService: AudioRecordingService,
-    private readonly audioProcessingService: AudioProcessingService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
+      private readonly audioRecordingService: AudioRecordingService,
+      private readonly audioProcessingService: AudioProcessingService,
+      private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
   }
 
-  startRecording() {
-    this.text = '';
-    this.isRecording = true;
-    this.audioRecordingService.startRecording(audioBlob => {
-      this.isRecording = false;
-      this.isConverting = true;
-      this.changeDetectorRef.detectChanges();
-      this.audioProcessingService.sendAudio(audioBlob)
-          .subscribe(transcription => {
-            this.isConverting = false;
-            this.text = transcription;
-            this.changeDetectorRef.detectChanges();
-          });
-    });
+  ngOnInit() {
+    this.observeAudioBlob();
   }
 
-  async stopRecording() {
-    this.isRecording = false;
-    this.isConverting = true;
-    this.audioRecordingService.stopRecording()
-      .then(audioBlob => {
-        this.audioProcessingService.sendAudio(audioBlob)
-          .subscribe(transcription => {
-            this.isConverting = false;
-            this.text = transcription;
-          });
-      });
+  startRecording() {
+    this.isRecording = true;
+    this.isConverting = false;
+    this.text = '';
+    this.changeDetectorRef.detectChanges();
+    this.audioRecordingService.startRecording();
+  }
+
+  stopRecording() {
+    this.audioRecordingService.stopRecording();
+  }
+
+  private observeAudioBlob() {
+    this.audioRecordingService.audioBlob$
+        .subscribe(audioBlob => {
+          this.isRecording = false;
+          this.isConverting = true;
+          this.changeDetectorRef.detectChanges();
+          this.sendAudioForTranscription(audioBlob);
+        });
+  }
+
+  private sendAudioForTranscription(audio: Blob) {
+    this.audioProcessingService.sendAudio(audio)
+        .subscribe(transcription => {
+          this.isConverting = false;
+          this.text = transcription;
+          this.changeDetectorRef.detectChanges();
+        });
   }
 
 }
