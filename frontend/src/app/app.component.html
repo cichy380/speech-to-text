@@ -1,16 +1,53 @@
-<main class="p-5">
-  <div class="grid grid-cols-2 gap-5">
-    <button (click)="startRecording()" class="p-4 bg-green-200">Start Recording</button>
-    <button (click)="stopRecording()" class="p-4 bg-red-200">Stop Recording</button>
-  </div>
+<div class="flex flex-col h-full">
+    <main class="grow p-5 flex flex-col justify-center items-center">
+        <app-mic-ico *ngIf="!isRecording && !isConverting && !text" [size]="96" class="opacity-15"></app-mic-ico>
 
-  <div *ngIf="isRecording" class="mt-10 flex justify-center">
-    <div class="h-20 w-20 rounded-full bg-red-600"></div>
-  </div>
+        <div *ngIf="isRecording" class="h-36 w-36 relative flex">
+            <span class="relative inline-flex justify-center items-center rounded-full bg-red-500 h-36 w-36">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <app-mic-ico [size]="96" [color]="'white'"></app-mic-ico>
+            </span>
+        </div>
 
-  <div class="mt-5 text-3xl">
-    <p *ngIf="isConverting" class="opacity-50">loading...</p>
-    <p>{{ text }}</p>
-  </div>
+        <div *ngIf="isConverting" class="w-full">
+            <div class="animate-pulse">
+                <div class="space-y-5">
+                    <div class="grid grid-cols-12 gap-4">
+                        <div class="h-7 bg-gray-200 rounded col-span-5"></div>
+                        <div class="h-7 bg-gray-200 rounded col-span-2"></div>
+                        <div class="h-7 bg-gray-200 rounded col-span-3"></div>
+                    </div>
+                    <div class="grid grid-cols-12 gap-4">
+                        <div class="h-7 bg-gray-200 rounded col-span-2"></div>
+                        <div class="h-7 bg-gray-200 rounded col-span-4"></div>
+                        <div class="h-7 bg-gray-200 rounded col-span-6"></div>
+                    </div>
+                    <div class="grid grid-cols-12 gap-4">
+                        <div class="h-7 bg-gray-200 rounded col-span-5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-</main>
+        <p *ngIf="!!text" class="text-3xl">{{ text }}</p>
+    </main>
+
+    <footer class="p-5">
+        <button *ngIf="!isRecording && !isConverting"
+                (click)="startRecording()"
+                class="flex justify-center items-center w-full h-14 font-semibold text-sm shadow rounded-md text-white bg-blue-500">
+            Start recording
+        </button>
+        <button *ngIf="isRecording"
+                (click)="stopRecording()"
+                class="flex justify-center items-center w-full h-14 font-semibold text-sm shadow rounded-md text-white bg-blue-500">
+            Stop
+        </button>
+        <button *ngIf="isConverting"
+                class="flex justify-center items-center w-full h-14 font-semibold text-sm shadow rounded-md text-white bg-blue-500 transition ease-in-out duration-150 cursor-not-allowed"
+                disabled>
+            <app-spinner-ico [size]="24" [color]="'white'" class="mr-2"></app-spinner-ico>
+            Processing...
+        </button>
+    </footer>
+</div>

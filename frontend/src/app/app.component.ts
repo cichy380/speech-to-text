@@ -4,12 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AudioRecordingService } from './audio-recording.service';
 import { AudioProcessingService } from './audio-processing.service';
+import { MicIconComponent } from './mic-icon/mic-icon.component';
+import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+    imports: [CommonModule, HttpClientModule, MicIconComponent, SpinnerIconComponent],
   providers: [AudioProcessingService, AudioRecordingService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
