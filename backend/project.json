@@ -19,7 +19,14 @@
       },
       "configurations": {
         "development": {},
-        "production": {}
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "backend/src/environments/environment.ts",
+              "with": "backend/src/environments/environment.prod.ts"
+            }
+          ]
+        }
       }
     },
     "serve": {
