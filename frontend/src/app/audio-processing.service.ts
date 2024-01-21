@@ -7,12 +7,12 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class AudioProcessingService {
 
-  constructor(private http: HttpClient) {
-  }
+    constructor(private http: HttpClient) {
+    }
 
-  public sendAudio(blob: Blob): Observable<string> {
-    const formData = new FormData();
-    formData.append('audio', blob);
-    return this.http.post<string>(environment.apiUrl + '/transcribe', formData, {responseType: 'text' as 'json'});
-  }
+    public sendAudio(blob: Blob): Observable<string> {
+        const formData = new FormData();
+        formData.append('audio', blob);
+        return this.http.post<string>(environment.apiUrl + '/transcribe', formData, { responseType: 'text' as 'json' });
+    }
 }

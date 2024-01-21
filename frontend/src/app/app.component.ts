@@ -10,60 +10,59 @@ import { SkeletonLoaderComponent } from './skeleton-loader/skeleton-loader.compo
 
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, HttpClientModule, MicIconComponent, SpinnerIconComponent, SkeletonLoaderComponent],
-  providers: [AudioProcessingService, AudioRecordingService],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    standalone: true,
+    imports: [CommonModule, HttpClientModule, MicIconComponent, SpinnerIconComponent, SkeletonLoaderComponent],
+    providers: [AudioProcessingService, AudioRecordingService],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
 
-  isRecording = false;
-  isConverting = false;
+    isRecording = false;
+    isConverting = false;
 
-  text = '';
+    text = '';
 
-  constructor(
-      private readonly audioRecordingService: AudioRecordingService,
-      private readonly audioProcessingService: AudioProcessingService,
-      private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {
-  }
+    constructor(
+        private readonly audioRecordingService: AudioRecordingService,
+        private readonly audioProcessingService: AudioProcessingService,
+        private readonly changeDetectorRef: ChangeDetectorRef,
+    ) {
+    }
 
-  ngOnInit() {
-    this.observeAudioBlob();
-  }
+    ngOnInit() {
+        this.observeAudioBlob();
+    }
 
-  startRecording() {
-    this.isRecording = true;
-    this.isConverting = false;
-    this.text = '';
-    this.changeDetectorRef.detectChanges();
-    this.audioRecordingService.startRecording();
-  }
+    startRecording() {
+        this.isRecording = true;
+        this.isConverting = false;
+        this.text = '';
+        this.changeDetectorRef.detectChanges();
+        this.audioRecordingService.startRecording();
+    }
 
-  stopRecording() {
-    this.audioRecordingService.stopRecording();
-  }
+    stopRecording() {
+        this.audioRecordingService.stopRecording();
+    }
 
-  private observeAudioBlob() {
-    this.audioRecordingService.audioBlob$
-        .subscribe(audioBlob => {
-          this.isRecording = false;
-          this.isConverting = true;
-          this.changeDetectorRef.detectChanges();
-          this.sendAudioForTranscription(audioBlob);
-        });
-  }
+    private observeAudioBlob() {
+        this.audioRecordingService.audioBlob$
+            .subscribe(audioBlob => {
+                this.isRecording = false;
+                this.isConverting = true;
+                this.changeDetectorRef.detectChanges();
+                this.sendAudioForTranscription(audioBlob);
+            });
+    }
 
-  private sendAudioForTranscription(audio: Blob) {
-    this.audioProcessingService.sendAudio(audio)
-        .subscribe(transcription => {
-          this.isConverting = false;
-          this.text = transcription;
-          this.changeDetectorRef.detectChanges();
-        });
-  }
-
+    private sendAudioForTranscription(audio: Blob) {
+        this.audioProcessingService.sendAudio(audio)
+            .subscribe(transcription => {
+                this.isConverting = false;
+                this.text = transcription;
+                this.changeDetectorRef.detectChanges();
+            });
+    }
 }
