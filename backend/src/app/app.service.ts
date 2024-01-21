@@ -26,12 +26,12 @@ export class AppService {
         });
     }
 
-    async transcribeAudio(buffer: Buffer) {
+    async transcribeAudio(buffer: Buffer, language: string) {
         const audio = { content: buffer };
         const config = {
             encoding: 'audio/wav',
             sampleRateHertz: 48000,
-            languageCode: 'pl-PL',
+            languageCode: language,
         };
         const request = { config, audio };
         const [response] = await this.client.recognize(request as IRecognizeRequest);

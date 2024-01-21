@@ -1,4 +1,16 @@
 <div class="flex flex-col h-full">
+    <header class="py-5 px-4 flex justify-end">
+        <span class="opacity-30">Language:</span>
+        <select name="language" [(ngModel)]="language">
+            <option value="en-US">English (United States)</option>
+            <option value="en-GB">English (Great Britain)</option>
+            <option value="pl-PL">Polski (Polska)</option>
+            <option value="es-ES">Español (España)</option>
+            <option value="fr-FR">Français (France)</option>
+            <option value="de-DE">Deutsch (Deutschland)</option>
+        </select>
+    </header>
+
     <main class="grow p-5 flex flex-col justify-center items-center">
         <app-mic-ico *ngIf="!isRecording && !isConverting && !text" [size]="96" class="opacity-15"></app-mic-ico>
 

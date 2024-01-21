@@ -1,6 +1,8 @@
-import { BadRequestException, Controller, HttpCode, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, HttpCode, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
+import { FileDto } from './dto/file.dto';
+import { TranscribeDto } from './dto/transcribe.dto';
 
 
 @Controller()
@@ -14,11 +16,10 @@ export class AppController {
     @Post('transcribe')
     @UseInterceptors(FileInterceptor('audio'))
     @HttpCode(200)
-    async transcribe(@UploadedFile() file) {
-        if (!file) {
+    async transcribe(@UploadedFile() fileDto: FileDto, @Body() transcribeDto: TranscribeDto) {
+        if (!fileDto) {
             throw new BadRequestException('No file uploaded.');
         }
-        return await this.appService.transcribeAudio(file.buffer);
+        return await this.appService.transcribeAudio(fileDto.buffer, transcribeDto.language);
     }
-
 }
