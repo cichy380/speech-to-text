@@ -9,25 +9,7 @@
             </span>
         </div>
 
-        <div *ngIf="isConverting" class="w-full">
-            <div class="animate-pulse">
-                <div class="space-y-5">
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="h-7 bg-gray-200 rounded col-span-5"></div>
-                        <div class="h-7 bg-gray-200 rounded col-span-2"></div>
-                        <div class="h-7 bg-gray-200 rounded col-span-3"></div>
-                    </div>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="h-7 bg-gray-200 rounded col-span-2"></div>
-                        <div class="h-7 bg-gray-200 rounded col-span-4"></div>
-                        <div class="h-7 bg-gray-200 rounded col-span-6"></div>
-                    </div>
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="h-7 bg-gray-200 rounded col-span-5"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <app-skeleton-loader *ngIf="isConverting" class="w-full"></app-skeleton-loader>
 
         <p *ngIf="!!text" class="text-3xl">{{ text }}</p>
     </main>
