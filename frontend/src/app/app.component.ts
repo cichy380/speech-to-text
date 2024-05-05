@@ -10,6 +10,9 @@ import { SpinnerIconComponent } from './spinner-icon/spinner-icon.component';
 import { SkeletonLoaderComponent } from './skeleton-loader/skeleton-loader.component';
 
 
+const MAX_RECORDING_TIME = 6000;
+
+
 @Component({
     selector: 'app-root',
     standalone: true,
@@ -24,6 +27,7 @@ export class AppComponent implements OnInit {
     isConverting = false;
     text = '';
     language = 'en-US';
+    recordingTimeoutId!: ReturnType<typeof setTimeout>;
 
     constructor(
         private readonly audioRecordingService: AudioRecordingService,
@@ -35,31 +39,44 @@ export class AppComponent implements OnInit {
         this.observeAudioBlob();
     }
 
-    startRecording() {
+    onStartRecordingButtonClick() {
         this.isRecording = true;
         this.isConverting = false;
         this.text = '';
         this.audioRecordingService.startRecording();
+        this.startWatchingRecordingTime();
     }
 
-    stopRecording() {
+    onStopRecordingButtonClick() {
         this.audioRecordingService.stopRecording();
+        this.stopWatchingRecordingTime();
     }
 
     private observeAudioBlob() {
         this.audioRecordingService.audioBlob$
             .subscribe(audioBlob => {
                 this.isRecording = false;
-                this.isConverting = true;
                 this.sendAudioForTranscription(audioBlob);
             });
     }
 
     private sendAudioForTranscription(audio: Blob) {
+        this.isConverting = true;
         this.audioProcessingService.sendAudio(audio, this.language)
             .subscribe(transcription => {
                 this.isConverting = false;
                 this.text = transcription;
             });
+    }
+
+    private startWatchingRecordingTime() {
+        this.recordingTimeoutId = setTimeout(
+            () => this.audioRecordingService.stopRecording(),
+            MAX_RECORDING_TIME
+        )
+    }
+
+    private stopWatchingRecordingTime() {
+        clearInterval(this.recordingTimeoutId);
     }
 }

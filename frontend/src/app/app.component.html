@@ -28,12 +28,12 @@
 
     <footer class="p-5">
         <button *ngIf="!isRecording && !isConverting"
-                (click)="startRecording()"
+                (click)="onStartRecordingButtonClick()"
                 class="flex justify-center items-center w-full h-14 font-semibold text-sm shadow rounded-md text-white bg-blue-500">
             Start recording
         </button>
         <button *ngIf="isRecording"
-                (click)="stopRecording()"
+                (click)="onStopRecordingButtonClick()"
                 class="flex justify-center items-center w-full h-14 font-semibold text-sm shadow rounded-md text-white bg-blue-500">
             Stop
         </button>
