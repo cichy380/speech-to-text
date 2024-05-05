@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
     constructor(
         private readonly audioRecordingService: AudioRecordingService,
         private readonly audioProcessingService: AudioProcessingService,
-        private readonly changeDetectorRef: ChangeDetectorRef,
     ) {
     }
 
@@ -40,7 +39,6 @@ export class AppComponent implements OnInit {
         this.isRecording = true;
         this.isConverting = false;
         this.text = '';
-        this.changeDetectorRef.detectChanges();
         this.audioRecordingService.startRecording();
     }
 
@@ -53,7 +51,6 @@ export class AppComponent implements OnInit {
             .subscribe(audioBlob => {
                 this.isRecording = false;
                 this.isConverting = true;
-                this.changeDetectorRef.detectChanges();
                 this.sendAudioForTranscription(audioBlob);
             });
     }
@@ -63,7 +60,6 @@ export class AppComponent implements OnInit {
             .subscribe(transcription => {
                 this.isConverting = false;
                 this.text = transcription;
-                this.changeDetectorRef.detectChanges();
             });
     }
 }

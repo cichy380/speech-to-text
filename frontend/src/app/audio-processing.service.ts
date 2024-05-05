@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
 
@@ -12,7 +11,7 @@ export class AudioProcessingService {
     ) {
     }
 
-    public sendAudio(blob: Blob, language: string): Observable<string> {
+    public sendAudio(blob: Blob, language: string) {
         const formData = new FormData();
         formData.append('audio', blob);
         formData.append('language', language);

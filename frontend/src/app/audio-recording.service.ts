@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Subject } from 'rxjs';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class AudioRecordingService {
 
     public audioBlob$: Subject<Blob> = new Subject();
@@ -18,6 +16,11 @@ export class AudioRecordingService {
     private readonly silenceDuration = 1000;
     private silenceStartTime: number | null = null;
     private stream!: MediaStream;
+
+    constructor(
+        private ngZone: NgZone,
+    ) {
+    }
 
     startRecording() {
         this.audioContext = new AudioContext();
@@ -60,11 +63,13 @@ export class AudioRecordingService {
 
     stopRecording() {
         this.mediaRecorder.onstop = async () => {
-            const blob = new Blob(this.recordedChunks, { type: 'audio/wav' });
-            this.recordedChunks = [];
-            await this.audioContext.close();
-            this.stream.getTracks().forEach(track => track.stop());
-            this.audioBlob$.next(blob);
+            await this.ngZone.run(async () => {
+                const blob = new Blob(this.recordedChunks, { type: 'audio/wav' });
+                this.recordedChunks = [];
+                await this.audioContext.close();
+                this.stream.getTracks().forEach(track => track.stop());
+                this.audioBlob$.next(blob);
+            });
         };
         this.mediaRecorder.stop();
     }
